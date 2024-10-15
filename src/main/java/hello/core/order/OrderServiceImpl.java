@@ -9,10 +9,16 @@ import hello.core.discount.RateDiscountPolicy;
 
 public class OrderServiceImpl implements OrderService {
 
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
-    //private final DiscountPolicy discountPolicy = new FixDiscountPolicy(); //고정할인정책 구현체로 생성
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy; //고정할인정책 구현체로 생성
+
+    //아래 생성자를 통해 메모리멤버리포 넘어가고 디스카운트폴리시도 픽스디스카운트 폴리시 넘어가서 값이 할당됨. 철저히 DIP를 지키는중
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
     //private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
-    private DiscountPolicy discountPolicy; //인터페이스에 의존
+    //private DiscountPolicy discountPolicy; //인터페이스에 의존
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
